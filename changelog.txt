@@ -1,0 +1,3 @@
+# 16/02/2024 Version 0.0
+Ebauche d'un Plugin fonctionnant comme une API.
+Lecture uniquement
