@@ -1,3 +1,12 @@
+# 19/02/2024
+réecriture du code
+Une seule requête à la fois
+Préparation usage d'une clé
+gestion erreur de requete inconnue
+gestion cle invalide
+compatible PHP 5.6
+
 # 16/02/2024 Version 0.0
 Ebauche d'un Plugin fonctionnant comme une API.
 Lecture uniquement
+requiert PluXml 5.8.9

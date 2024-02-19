@@ -7,6 +7,7 @@
 	'L_ALLOW_ACCESS'			=> 'Autorisation d\'accés:',
 	'L_ALL'						=> 'Pas de restriction',
 	'L_KEY'						=> 'avec une clé.',
+	'L_INVALID_KEY'				=> 'Clé de connexion requise : manquante ou invalide.',
 	
 	#config
 	'L_SAVE'					=> 'enregistrer',
