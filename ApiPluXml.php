@@ -187,7 +187,7 @@
 						break;
 						
 						case 'categorie':
-							json_encode($plxMotor->aCats, JSON_PRETTY_PRINT | true).$next;
+							echo json_encode($plxMotor->aCats, JSON_PRETTY_PRINT | true).$next;
 						break;
 						
 						case 'etiquette':
