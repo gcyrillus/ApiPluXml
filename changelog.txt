@@ -1,4 +1,13 @@
-# 19/02/2024
+# 22/02/2024 Version 2.0
+ajout headers manquant sur indexBegin
+ajout fichier d'exemple javascript d'utilisation
+ /plugin/apiPluXml/js/apiCalling.js
+	affichage liste de lien des categories, statiques et tags
+	affichage des article avec pagination
+ajout fichier HTML d'exemple d'utilisation du javascript
+ /plugin/apiPluXml/assets/apiCalling.html
+
+# 19/02/2024 Version 1.0
 réecriture du code
 Une seule requête à la fois
 Préparation usage d'une clé

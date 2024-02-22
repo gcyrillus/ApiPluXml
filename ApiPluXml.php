@@ -186,7 +186,7 @@
 							echo json_encode($plxMotor->aStats, JSON_PRETTY_PRINT | true).$next;
 						break;
 						
-						case 'categorie':
+						case 'categorie':						
 							echo json_encode($plxMotor->aCats, JSON_PRETTY_PRINT | true).$next;
 						break;
 						
@@ -270,7 +270,12 @@
 				# voir si on ne peut pas extraire les contenus des articles avant de charger $plxshow
 				echo self::BEGIN_CODE;
 				?>
+				
 				if(isset($_GET['article'])){
+				//var_dump($plxShow->plxMotor->plxRecord_arts->result[0]);
+				array_unshift($plxShow->plxMotor->plxRecord_arts->result, $plxShow->plxMotor->plxRecord_arts->result[0]);
+				if(isset($_GET['bypage'])) $plxShow->plxMotor->plxRecord_arts->bypage=$_GET['bypage']; 
+				if(isset($_GET['page_number'])) $plxShow->plxMotor->plxRecord_arts->page_number=$_GET['page_number']; 
 					header("Content-Type:application/json");
 					echo json_encode($plxShow->plxMotor->plxRecord_arts, JSON_PRETTY_PRINT | true).$next;
 				}
