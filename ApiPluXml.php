@@ -155,6 +155,7 @@
 			header("Cache-Control: post-check=0, pre-check=0", false);
 			header("Pragma: no-cache");
 			$plxMotor = plxMotor::getInstance();
+			$plxMotor->aConf['bypage'] = '9999';
 			$plugin = $plxMotor->plxPlugins->getInstance('<?= __CLASS__ ?>');
 			$plugin->getInfos();
 			$plugin->version =$plugin->getInfo('version');
