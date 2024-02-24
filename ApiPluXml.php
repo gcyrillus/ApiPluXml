@@ -27,6 +27,7 @@
 		public $apiKeyConfig;
 		public $apiKeys = array();
 		public $apiKeyCalling  ='';
+		public $version;
 		
 		
 		public function __construct($default_lang) {
@@ -42,7 +43,7 @@
 			$this->addHook('ThemeEndHead', 'ThemeEndHead');
 			$this->addHook('apiKey', 'apiKey');
 			$this->addHook('Index', 'Index');
-			$this->addHook('IndexBegin', 'IndexBegin');				
+			$this->addHook('IndexBegin', 'IndexBegin');
 		}
 		
 		# Activation / desactivation
@@ -75,7 +76,7 @@
 			// ajouter ici vos propre codes (insertion balises link, script , ou autre)
 		}		
 		
-		
+
 		/**
 			* Méthode qui affiche un message si le plugin n'a pas la langue du site dans sa traduction
 			* Ajout gestion du wizard si inclus au plugin
@@ -94,7 +95,7 @@
 		}
 		
 		/** 
-			* Méthode MyHapKey
+			* Méthode apiKey
 			* 
 			* Descrition	:
 			* @author		: TheCrok
@@ -150,6 +151,7 @@
 				echo self::BEGIN_CODE;
 			?>
 			header("Access-Control-Allow-Origin: *");
+			header('Access-Control-Allow-Methods:  GET, OPTIONS');
 			header("Access-Control-Allow-Headers: apiKey");
 			header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 			header("Cache-Control: post-check=0, pre-check=0", false);
@@ -162,9 +164,6 @@
 			$next='';
 			if(count($_GET) ==1) {
 				$plugin->apiHelp();
-			}
-			if(count($_GET)>2) {
-				//$next=',';
 			}
 			if($next !="") echo '[';
 			if(count($_GET) > 1)
@@ -238,7 +237,9 @@
 			echo self::END_CODE;
 			}
 		}
-		
+
+
+		/* affichage du fichier d'aide de l'API */ 
 		public function apiHelp() {
 		$this->getInfos();
 		
@@ -265,16 +266,23 @@
 		* 
 		**/
 		public function IndexBegin() {
+
+				 ini_set('display_errors', 'Off');
+
 		// Contenus article: comme ces infos ne semblent disponibles qu'à partir d'ici ...
 			if(isset($_GET['apiPluxml'])) {
 				# code à executer
 				# voir si on ne peut pas extraire les contenus des articles avant de charger $plxshow
 				echo self::BEGIN_CODE;
 				?>
-				
 				if(isset($_GET['article'])){
-				//var_dump($plxShow->plxMotor->plxRecord_arts->result[0]);
-				array_unshift($plxShow->plxMotor->plxRecord_arts->result, $plxShow->plxMotor->plxRecord_arts->result[0]);
+				header("Access-Control-Allow-Origin: *");
+				header("Referrer-Policy:  origin-when-cross-origin ");
+				header('Access-Control-Allow-Methods:  GET, OPTIONS');
+				header("Access-Control-Allow-Headers: apiKey");
+				header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+				header("Cache-Control: post-check=0, pre-check=0", false);
+				header("Pragma: no-cache");
 				if(isset($_GET['bypage'])) $plxShow->plxMotor->plxRecord_arts->bypage=$_GET['bypage']; 
 				if(isset($_GET['page_number'])) $plxShow->plxMotor->plxRecord_arts->page_number=$_GET['page_number']; 
 					header("Content-Type:application/json");
@@ -286,7 +294,7 @@
 					$plugin = $plxShow->plxMotor->plxPlugins->getInstance('<?= __CLASS__ ?>');
 					$plugin->apiHelp();
 				}
-				#apiPluxml s'arrete là!
+				#apiPluxml s'arrete là! C'est une API END !
 				exit;
 				<?php
 				echo self::END_CODE;		
@@ -295,4 +303,4 @@
 		}
 		
 		
-		}				
+	}				

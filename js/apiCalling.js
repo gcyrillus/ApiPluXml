@@ -1,12 +1,4 @@
-/*/Config/*/
-const apiKey = 'apiPluXml';
-const ProtocolHTTP = 'https';/* anything or http */
-const apiPluXmlSite = 'pluxopolis.net/crashnewstest';/* pluxml site domain name  where to fetch datas example: [pluxopolis.net/crashnewstest] (without brackets)   */
-const apibypage=''; /* default value*/  
-let artcontent= false ; /* pour voir tout l'article : mettre a  true */
-/*/End Config/*/
-
-/* fetch datas */
+/* fetch API datas */
 let s = ''; 
 if(ProtocolHTTP != 'http') s='s';
 function getPlxApiResult(u,q) {
@@ -98,7 +90,6 @@ function show(datas,type,q, rubricks='', authors='') {
 	}
 }
 function getArticles(articles,art,rubricks,authors) {
-    console.log('sub-index: ' +articles)
 	artTags = art.tags.replace(/\,$/, "").replace(/\s/g, "").split(",");
 	tags= getTags('',artTags);
 	artCats = art.categorie.replace(/\,$/, "").replace(/\s/g, "").split(",");
@@ -110,7 +101,7 @@ function getArticles(articles,art,rubricks,authors) {
 	<article class="articleApilList">
 		<h2><a href="http${s}://${apiPluXmlSite}/?article${art.numero}/${art['url']}">${art.title}</a></h2>
 		<p>Ecrit le ${datef} par: <b>${authors[art.author]['name']}</b> | Catégorie: ${cats} |Etiquette: ${tags}</p>
-		<div>${art.chapo}</div>
+		<div><img style="float:leftmax-height:5em" src="//${apiPluXmlSite}/${art.thumbnail}">${art.chapo}</div>
 		${art.content}
 	</article>
 	`;
@@ -136,7 +127,7 @@ function getDate(artdate) {// deconstruction de la chaine en date lisible
 
 async function getCatNames(rubricks) {
     // faut retrouver la correspondance du numéro donc second request et on attend
-	rubricks = await fetch("//" + apiPluXmlSite + "/?apiPluxml&categorie", {
+	rubricks = await fetch("//" + apiPluXmlSite + "apiPluxml&categorie", {
 		method: "GET",
 		headers: { apiKey: apiKey }
 	})
@@ -162,13 +153,15 @@ async function getCatNames(rubricks) {
 
 async function getAuthors(authors) {
     // faut retrouver la correspondance du numéro donc second request et on attend
-	authors = await fetch("//" + apiPluXmlSite + "/?apiPluxml&authors", {
+	authors = await fetch("//" + apiPluXmlSite + "apiPluxml&authors", {
 		method: "GET",
 		headers: { apiKey: apiKey }
 	})
-	.then((response) => response.json())
+	.then((response) =>  response.json() )
 	.then((json) => {
+
 		try {
+
 			//console.log(json['001'].name );
 			 Object.entries(json).forEach((entry) => {
              const [key, value] = entry;
@@ -181,13 +174,8 @@ async function getAuthors(authors) {
 			} catch (err) {
 			console.log("fetch author error");
 		}
-		
 		return authors;
+
+
 	});	
-}		
-/* sources 
-	https://stackoverflow.com/questions/990904/remove-accents-diacritics-in-a-string-in-javascript
-	https://stackoverflow.com/questions/12248854/javascript-remove-last-character-if-a-colon & https://stackoverflow.com/questions/10800355/remove-whitespaces-inside-a-string-in-javascript
-	https://stackoverflow.com/questions/1960473/get-all-unique-values-in-a-javascript-array-remove-duplicates  // let unique = [...new Set(myArray)];
-	... forum.pluxml.prg, alsacréations.com, pluxopolis.net, php.net, mdn, ....
-*/					              
+}

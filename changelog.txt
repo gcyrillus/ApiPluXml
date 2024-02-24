@@ -1,3 +1,10 @@
+# 24/02/2024 Version 2.5
+Ajout affichage thumbnail - à revoir car pour les urls  'data/medias/monImageDansSonDossier.jpg'
+modifications 
+	fichier exemples
+	fichier d'aide
+	fonctions d'exemples affichages charger depuis le site distant
+
 # 22/02/2024 Version 2.0
 ajout headers manquant sur indexBegin
 ajout fichier d'exemple javascript d'utilisation
@@ -13,9 +20,9 @@ Une seule requête à la fois
 Préparation usage d'une clé
 gestion erreur de requete inconnue
 gestion cle invalide
-compatible PHP 5.6
+compatible PHP 5.6 (politesse aux hebergés Free)
 
 # 16/02/2024 Version 0.0
 Ebauche d'un Plugin fonctionnant comme une API.
 Lecture uniquement
-requiert PluXml 5.8.9
+requiert PluXml 5.8.X

@@ -16,13 +16,14 @@ body:not(:has(section)) b {color:cornflowerblue;font-weight: bolder}
 <div id="apiplx">
 	<h1>Aide du plugin ApiPluXml</h1>
 	<p>aide redigé</p>
-	<p>Hook >aucun -|_ Options: GET uniquement -|- Clé de connexion  (actuellement optionnelle)</p>
+	<p>Hook >aucun -|_ Options: GET uniquement -|- Clé de connexion  (actuellement inutile)</p>
 	<h2>Utilisation</h2>
 	<p>Activer le plugin - Les données publiques de votre site sont alors aussi consultables via l'Api.</p>
 	<p>acceder à votre site par son adresse en ajoutant à l'url les données que vous voulez utiliser</p>
 	<h2>Tableaux des données disponibles:</h2>
 	<h3>Affichage brut</h3>
 	<p>Le format d'affichage brut au format json est lisible à l'écran. C'est aussi un format standard accessible par de nombreux programmes et scripts. </p>
+	<p class="apiEnd">>En cliquant sur les liens ci-dessous, vous verrez les données(mais lisible) que votre site partage.</p>
 	<dl>
 	<dt>Pour accéder a l'aide</dt>
 	<dd>Taper l'adresse de votre site suivi de <a href="<?= PLX_ROOT ?>?apiPluxml" target="_blank"><code>?apiPluxml</code></a></dd>
@@ -46,32 +47,81 @@ body:not(:has(section)) b {color:cornflowerblue;font-weight: bolder}
 	Le plugin vous propose un fichier javacript doté de plusieurs fonctions d'affichages et options de configurations
 	pour traiter les données renvoyer par un site où le plugin apiPluXml est activé.Le site peut-être distant ou être le site lui même.</p>
 	<p>Voici le début du fichier JavaScript avec ces options de configaration à regler à votre convenance</p>
-	<pre><b>Extrait de apiCalling.js</b><code>/*/Config/*/
-const apiKey = 'apiPluXml'; // Dans le futur, ce sera votre clé personnel à demander au responsable du site duquel vous souhaitez utiliser les ressources.
-const ProtocolHTTP = 'https';/* anything or http */
-const apiPluXmlSite = 'pluxopolis.net/crashnewstest';/* pluxml site domain name  where to fetch datas examples: [pluxopolis.net/crashnewstest] (without brackets)   */
-const apibypage=''; /* default value is 5*/  
-let artcontent= false ; /* afficher uniquement le chapo des articles distants | pour voir tout l'article : mettre à true */
-/*/End Config/*/</code></pre>
-<p>Pour un fonctionement optimale, il est necessaire que le site sollicité et le site demandeur se connectent 
+	<pre><b>Extrait de apiCalling.js</b><code>/* fetch API datas */
+let s = ''; 
+if(ProtocolHTTP != 'http') s='s';
+function getPlxApiResult(u,q) {
+	fetch('//'+u,{
+		method: 'GET',
+		headers:{'apiKey': apiKey
+	}
+	})
+	.then(response => response.text()) // Parse the response as text
+	.then(async text => {
+		try {
+		const data = JSON.parse(text); // Try to parse the response as JSON
+		if(q == 'article') {
+			// data.result.unshift(data.result[0]);
+			let rubricks = [];
+			await getCatNames(rubricks)
+			let authors = [];
+			await getAuthors(authors);
+			show(data,'json',q, rubricks, authors);
+		} else {
+			show(data,'json',q);                
+		}
+		} catch(err) {
+			show(text,'html',q);
+		}
+	});  
+}</code></pre>
+<p>Pour un fonctionement optimale, il est préferable que l'API et le site demandeur se connectent 
 et échangent via le protocol sécurisé HTTPS. </p>
 	<p>Avec ce fichier JavaScript vient un fichier HTML d'exemple d'utilisation de l'unique fonction pour interrogé l'API 
 	et un conteneur HTML qui sert de receptacle pour l'affichage.Voici un aperçu de ce fichier :</p>
-	<pre><b>Fichier apiCalling.html</b><code>&lt;script>
-////fonctions d'appels et d'affichage html
-//========================================
-//	getPlxApiResult(apiPluXmlSite+'/?apiPluxml') ; // aide descriptif
-//	getPlxApiResult(apiPluXmlSite+'/?apiPluxml&static','static') ;
-	getPlxApiResult(apiPluXmlSite+'/?apiPluxml&article&page_number=1&bypage=5','article') ;
-//	getPlxApiResult(apiPluXmlSite+'/?apiPluxml&categorie','categorie') ;
-//	getPlxApiResult(apiPluXmlSite+'/?apiPluxml&etiquette','etiquette') ;
+	<pre><b>Fichier apiCalling.html</b><code>&lt;div id="results">&lt;!-- La liste s'affiche ici --&gt;&lt;/div&gt;
+&lt;script&gt;
+/*/Config/*/
+// Votre clé
+const apiKey = 'apiPluXml';
 
-////fonction d'appels , retourne un objet json
-//============================================
-//	getPlxApiResult(apiPluXmlSite+'/?apiPluxml&commentaires','commentaires') 
-//	getPlxApiResult(apiPluXmlSite+'/?apiPluxml&authors','authors') 
-&lt;/script>
-&lt;div id="results">&lt;!-- La requête s'affiche ici -->&lt;/div>	
+// protocol HTTP du site (preference https (connexion sécurisé)| http non garantie )
+const ProtocolHTTP = 'https';/* anything or http */
+
+// nom du domaine de l'API suivit d'un / et d'un ? si l'url rewriting n'est pas activé sur le site OluXml distant.
+const apiPluXmlSite = 'pluxthemes.com/';/*  exemple: 'pluxopolis.net/crashnewstest/' ou 'pluxthemes.com/?'   */
+
+// nombre d'article par page
+const apibypage=''; /* rien = la config du site distant */  
+
+// afficher l'article en entier ?
+let artcontent= false ; /* pour voir tout l'article : mettre a  true */
+/*/End Config/*/
+
+// Création et appel du fichier javascript distant.
+let scpt = document.createElement('script');
+scpt.setAttribute('id','apiCall');
+scpt.setAttribute('async','');
+scpt.setAttribute('src', '//'+apiPluXmlSite+'plugins/ApiPluXml/js/apiCalling.js');
+document.querySelector('#results').appendChild(scpt);
+
+  var script = document.querySelector('#apiCall');
+  script.addEventListener('load', function() {
+  
+	////fonctions d'appels et d'affichage html
+	//========================================
+	//	getPlxApiResult(apiPluXmlSite+'apiPluxml') ; // aide descriptif
+	//	getPlxApiResult(apiPluXmlSite+'apiPluxml&static','static') ;
+		getPlxApiResult(apiPluXmlSite+'apiPluxml&article&page_number=1&bypage=5','article') ;
+	//	getPlxApiResult(apiPluXmlSite+'apiPluxml&categorie','categorie') ;
+	//	getPlxApiResult(apiPluXmlSite+'apiPluxml&etiquette','etiquette') ;
+
+	////fonction d'appels , retourne un objet json
+	//============================================
+	//	getPlxApiResult(apiPluXmlSite+'/?apiPluxml&commentaires','commentaires') 
+	//	getPlxApiResult(apiPluXmlSite+'/?apiPluxml&authors','authors')  
+  });			
+&lt;/script&gt;
 	</code></pre>
 	<p>décommenter les lignes que vous voulez utiliser</p>	
 	<p>Ce ne sont bien entendue que quelques exemples d'usage possibles.</p>

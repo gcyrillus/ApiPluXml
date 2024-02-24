@@ -2,10 +2,11 @@
 	<document>
 	<title><![CDATA[ApiPluXml]]></title>
 	<author><![CDATA[G-Cyrillus]]></author>
-	<version>2.0</version>
-	<date>2024-02-22</date>
+	<version>2.5</version>
+	<date>2024-02-24</date>
 	<site>https://pluxopolis.net</site>
 	<description><![CDATA[En gestation:  API pour un PluXml HeadLess , 
-		exemples javascript fournis pour afficher les requetes dans vos pages]]></description>
+		Options : GET uniquement 
+		Aide et exemples javascript fournis pour utiliser l'API]]></description>
 	<scope></scope>
 	</document>
