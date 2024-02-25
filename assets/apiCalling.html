@@ -21,7 +21,7 @@ let artcontent= false ; /* pour voir tout l'article : mettre a  true */
 let scpt = document.createElement('script');
 scpt.setAttribute('id','apiCall');
 scpt.setAttribute('async','');
-scpt.setAttribute('src', '//'+apiPluXmlSite+'plugins/ApiPluXml/js/apiCalling.js');
+scpt.setAttribute('src', '//'+apiPluXmlSite.replace(/\?$/, '')+'plugins/ApiPluXml/js/apiCalling.js');
 document.querySelector('#results').appendChild(scpt);
 
   var script = document.querySelector('#apiCall');
