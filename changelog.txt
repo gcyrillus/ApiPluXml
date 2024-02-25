@@ -1,4 +1,6 @@
 # 25/02/2024 Version 2.5.1
+fichier assets/apiCalling.js
+	FIX pagination (datas.result no longr used for datart + test if smaller   or equal
 fichier assets/apiCalling.html 
 	FIX nettoyage du ? sur l'adresse appelant le fichier JavaScript externe
 
