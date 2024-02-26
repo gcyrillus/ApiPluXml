@@ -1,6 +1,8 @@
 # 26/06/2024 Version 2.5.2
 FIX Warning PHP 8+
 	reafectation de plxRecord_arts->i au passage des infos de pagination (bypage et page_number)
+FIX liens vers les articles et tags du site distant
+	fichier: js/apiCalling.js
 
 # 25/02/2024 Version 2.5.1
 fichier assets/apiCalling.js
