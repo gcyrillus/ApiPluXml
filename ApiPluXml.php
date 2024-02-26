@@ -276,19 +276,18 @@
 				echo self::BEGIN_CODE;
 				?>
 				if(isset($_GET['article'])){
-				header("Access-Control-Allow-Origin: *");
-				header("Referrer-Policy:  origin-when-cross-origin ");
-				header('Access-Control-Allow-Methods:  GET, OPTIONS');
-				header("Access-Control-Allow-Headers: apiKey");
-				header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-				header("Cache-Control: post-check=0, pre-check=0", false);
-				header("Pragma: no-cache");
-				if(isset($_GET['bypage'])) $plxShow->plxMotor->plxRecord_arts->bypage=$_GET['bypage']; 
-				if(isset($_GET['page_number'])) $plxShow->plxMotor->plxRecord_arts->page_number=$_GET['page_number']; 
+				if(isset($_GET['bypage'])){
+					$plxShow->plxMotor->plxRecord_arts->i = [];
+					$plxShow->plxMotor->plxRecord_arts->i[0]['bypage'] = $_GET['bypage'];
+				} 
+				if(isset($_GET['page_number'])){
+					$plxShow->plxMotor->plxRecord_arts->i[0]['page_number'] = $_GET['page_number'];
+				} 
+
 					header("Content-Type:application/json");
 					echo json_encode($plxShow->plxMotor->plxRecord_arts, JSON_PRETTY_PRINT | true).$next;
 				}
-				#demande inconnue
+				#demande inconnue . improbable
 				elseif( count($_GET) > 1){ 
 					header( 'HTTP/1.1 400 BAD REQUEST' );
 					$plugin = $plxShow->plxMotor->plxPlugins->getInstance('<?= __CLASS__ ?>');
