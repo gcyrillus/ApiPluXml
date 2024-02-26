@@ -122,7 +122,7 @@ function getTags(tags,tagada) {
 	return tags;                
 }
 function getCategories(cats,catagada,rubricks) {  // extraction de chaque etiquettes  
-	catagada.forEach(cat => cats +='<a hre'+'f="http'+s+'://'+apiPluXmlSite+'categorie'+ cat+'/'+rubricks[cat].url+'" target="_blank">'+ rubricks[cat].name +'</a> ');
+	catagada.forEach(cat => cats +='<a hre'+'f="http'+s+'://'+apiPluXmlSite+'categorie'+ cat.replace(/^0+/, '')+'/'+rubricks[cat].url+'" target="_blank">'+ rubricks[cat].name +'</a> ');
 	return cats;                
 }
 function getDate(artdate) {// deconstruction de la chaine en date lisible
