@@ -73,18 +73,18 @@ function show(datas,type,q, rubricks='', authors='') {
 			let previous ='';
 			let first = (Number(page_number) * Number(bypage)) - Number(bypage) + 1;
 			let last = Number(bypage) * Number(page_number) + Number(bypage)  - Number(bypage) + 1;
-            let nextPage= ++datas.i[0]['page_number'];
-            let nextlast = last + Number(bypage);
-            let whereAt='';
+            		let nextPage= ++datas.i[0]['page_number'];
+            		let nextlast = last + Number(bypage);
+            		let whereAt='';
 			let datart = Object.entries(datas.result)
-            if(pages>1) whereAt =' <span class="apiPageAt">Page <b>'+page_number +'</b> / '+pages+' </span>&nbsp;';
-            if(page_number > 1) previous='<button onclick="getPlxApiResult(\''+apiPluXmlSite+'apiPluxml&article&bypage='+bypage+'&page_number='+ --page_number + '\',\'article\');return false;">previous</button>';
-            if(last  <= datart.length) next = '<button onclick="getPlxApiResult(\''+apiPluXmlSite+'apiPluxml&article&bypage='+bypage+'&page_number='+ nextPage + '\',\'article\');return false;">next</button>';
-            datart =  datart.slice(--first,--last);
-            datart.reverse()
+            		if(pages>1) whereAt =' <span class="apiPageAt">Page <b>'+page_number +'</b> / '+pages+' </span>&nbsp;';
+            		if(page_number > 1) previous='<button onclick="getPlxApiResult(\''+apiPluXmlSite+'apiPluxml&article&bypage='+bypage+'&page_number='+ --page_number + '\',\'article\');return false;">previous</button>';
+            		if(last  <= datart.length) next = '<button onclick="getPlxApiResult(\''+apiPluXmlSite+'apiPluxml&article&bypage='+bypage+'&page_number='+ nextPage + '\',\'article\');return false;">next</button>';
+            		datart =  datart.slice(--first,--last);
+            		datart.reverse()
 			let articles ='';
-            res.innerHTML='';
-            res.insertAdjacentHTML( 'beforeend', '<nav class="apiNav">'+previous+' '+whereAt+' '+ next +'</nav>');
+            		res.innerHTML='';
+            		res.insertAdjacentHTML( 'beforeend', '<nav class="apiNav">'+previous+' '+whereAt+' '+ next +'</nav>');
 			datart.forEach(function(art,articles){res.insertAdjacentHTML( 'afterbegin',getArticles(articles,art['1'],rubricks,authors))})
 		}
 	}
@@ -95,16 +95,24 @@ function getArticles(articles,art,rubricks,authors) {
 	artCats = art.categorie.replace(/\,$/, "").replace(/\s/g, "").split(",");
 	cats=getCategories('',artCats,rubricks);
 	datef = getDate(art.date);
-	if(artcontent ==false ){ art.content = `Lire la suite de: <a href="http${s}://${apiPluXmlSite}article${art.numero.replace(/^0+/, '')}/${art.url}">${art.title}</a> <hr>`;}
+	let thumb='';
+	let thumbTitle='';
+	let thumbAlt='';
+	if(art.thumbnail_title !== '') {thumbTitle=' title="'+art.thumbnail_title.replaceAll('\'', '')+'"';}
+	if(art.thumbnail_alt !== '') {  thumbAlt=' alt="'+art.thumbnail_alt.replaceAll('\'', '')+'"';}
+	if(art.thumbnail !== '') {thumb='<img src="'+art.thumbnail+'" '+thumbTitle+thumbAlt+' style="float:left;max-height:5em">'}
+	if(artcontent ==false ){ art.content = `<p style="clear:both">Lire la suite de: <a href="http${s}://${apiPluXmlSite}article${art.numero.replace(/^0+/, '')}/${art.url}">${art.title}</a></p> <hr>`;}
 	else {art.content ='<div>'+art.content+'</div>';}
 	articles =`
 	<article class="articleApilList">
 		<h2><a href="http${s}://${apiPluXmlSite}article${art.numero.replace(/^0+/, '')}/${art['url']}">${art.title}</a></h2>
 		<p>Ecrit le ${datef} par: <b>${authors[art.author]['name']}</b> | Catégorie(s): ${cats} |Etiquette(s): ${tags}</p>
-		<div><img style="float:leftmax-height:5em" src="//${apiPluXmlSite}/${art.thumbnail}">${art.chapo}</div>
+		<div>
+  			${thumb}
+			${art.chapo}
+  		</div>
 		${art.content}
-	</article>
-	`;
+	</article>;
 	return articles;//show!
 	
 	
