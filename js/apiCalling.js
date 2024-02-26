@@ -15,16 +15,16 @@ function getPlxApiResult(u,q) {
 				// data.result.unshift(data.result[0]);
 				let rubricks = [];
 				await getCatNames(rubricks)
-                let authors = [];
-                await getAuthors(authors);
-                show(data,'json',q, rubricks, authors);
-                } else {
-                show(data,'json',q);                
-			}
-			} catch(err) {
-			show(text,'html',q);
+               			let authors = [];
+                		await getAuthors(authors);
+                		show(data,'json',q, rubricks, authors);
+                	} else {
+                		show(data,'json',q);                
 		}
-	});  
+	} catch(err) {
+		show(text,'html',q);
+	}
+   });  
 }
 
 
@@ -143,14 +143,13 @@ async function getCatNames(rubricks) {
 	.then((json) => {
 		try {
 			Object.entries(json).forEach((entry) => {
-				//rubricks[num].cat.name = cat.url;
 				const [key, value] = entry;
 				rubricks[key] ={}
-                rubricks[key].name = value.name;
-                rubricks[key].url = value.url;
+                		rubricks[key].name = value.name;
+                		rubricks[key].url = value.url;
 			});
 			
-			} catch (err) {
+		} catch (err) {
 			console.log("rub error");
 		}		
 		return rubricks;
@@ -170,12 +169,12 @@ async function getAuthors(authors) {
 		try {
 			//console.log(json['001'].name );
 			 Object.entries(json).forEach((entry) => {
-             const [key, value] = entry;
-             authors[key]={}
-             authors[key].name= value.name;
-             authors[key].infos = value.infos;
-             });			
-			} catch (err) {
+             			const [key, value] = entry;
+             			authors[key]={}
+             			authors[key].name= value.name;
+             			authors[key].infos = value.infos;
+             		});			
+		} catch (err) {
 			console.log("fetch author error");
 		}
 		return authors;
