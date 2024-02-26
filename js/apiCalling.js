@@ -73,18 +73,18 @@ function show(datas,type,q, rubricks='', authors='') {
 			let previous ='';
 			let first = (Number(page_number) * Number(bypage)) - Number(bypage) + 1;
 			let last = Number(bypage) * Number(page_number) + Number(bypage)  - Number(bypage) + 1;
-            		let nextPage= ++datas.i[0]['page_number'];
-           		let nextlast = last + Number(bypage);
-            		let whereAt='';
+            let nextPage= ++datas.i[0]['page_number'];
+            let nextlast = last + Number(bypage);
+            let whereAt='';
 			let datart = Object.entries(datas.result)
-           		if(pages>1) whereAt =' <span class="apiPageAt">Page <b>'+page_number +'</b> / '+pages+' </span>&nbsp;';
-           		if(page_number > 1) previous='<button onclick="getPlxApiResult(\''+apiPluXmlSite+'apiPluxml&article&bypage='+bypage+'&page_number='+ --page_number + '\',\'article\');return false;">previous</button>';
-           		if(last  <= datart.length) next = '<button onclick="getPlxApiResult(\''+apiPluXmlSite+'apiPluxml&article&bypage='+bypage+'&page_number='+ nextPage + '\',\'article\');return false;">next</button>';
-            		datart =  datart.slice(--first,--last);
-            		datart.reverse()
+            if(pages>1) whereAt =' <span class="apiPageAt">Page <b>'+page_number +'</b> / '+pages+' </span>&nbsp;';
+            if(page_number > 1) previous='<button onclick="getPlxApiResult(\''+apiPluXmlSite+'apiPluxml&article&bypage='+bypage+'&page_number='+ --page_number + '\',\'article\');return false;">previous</button>';
+            if(last  <= datart.length) next = '<button onclick="getPlxApiResult(\''+apiPluXmlSite+'apiPluxml&article&bypage='+bypage+'&page_number='+ nextPage + '\',\'article\');return false;">next</button>';
+            datart =  datart.slice(--first,--last);
+            datart.reverse()
 			let articles ='';
-            		res.innerHTML='';
-            		res.insertAdjacentHTML( 'beforeend', '<nav class="apiNav">'+previous+' '+whereAt+' '+ next +'</nav>');
+            res.innerHTML='';
+            res.insertAdjacentHTML( 'beforeend', '<nav class="apiNav">'+previous+' '+whereAt+' '+ next +'</nav>');
 			datart.forEach(function(art,articles){res.insertAdjacentHTML( 'afterbegin',getArticles(articles,art['1'],rubricks,authors))})
 		}
 	}
@@ -95,12 +95,12 @@ function getArticles(articles,art,rubricks,authors) {
 	artCats = art.categorie.replace(/\,$/, "").replace(/\s/g, "").split(",");
 	cats=getCategories('',artCats,rubricks);
 	datef = getDate(art.date);
-	if(artcontent ==false ){ art.content = `Lire la suite de: <a href="http${s}://${apiPluXmlSite}/?article${art.numero}/${art.url}">${art.title}</a> <hr>`;}
+	if(artcontent ==false ){ art.content = `Lire la suite de: <a href="http${s}://${apiPluXmlSite}article${art.numero.replace(/^0+/, '')}/${art.url}">${art.title}</a> <hr>`;}
 	else {art.content ='<div>'+art.content+'</div>';}
 	articles =`
 	<article class="articleApilList">
-		<h2><a href="http${s}://${apiPluXmlSite}/?article${art.numero}/${art['url']}">${art.title}</a></h2>
-		<p>Ecrit le ${datef} par: <b>${authors[art.author]['name']}</b> | Catégorie: ${cats} |Etiquette: ${tags}</p>
+		<h2><a href="http${s}://${apiPluXmlSite}article${art.numero.replace(/^0+/, '')}/${art['url']}">${art.title}</a></h2>
+		<p>Ecrit le ${datef} par: <b>${authors[art.author]['name']}</b> | Catégorie(s): ${cats} |Etiquette(s): ${tags}</p>
 		<div><img style="float:leftmax-height:5em" src="//${apiPluXmlSite}/${art.thumbnail}">${art.chapo}</div>
 		${art.content}
 	</article>
@@ -110,11 +110,11 @@ function getArticles(articles,art,rubricks,authors) {
 	
 }
 function getTags(tags,tagada) {    
-	tagada.forEach(tag => tags +='<a hre'+'f="http'+s+'://'+apiPluXmlSite+'/?tag/'+ tag.normalize("NFD").replace(/[\u0300-\u036f]/g, "") +'" target="_blank">'+ tag +'</a> ');
+	tagada.forEach(tag => tags +='<a hre'+'f="http'+s+'://'+apiPluXmlSite+'tag/'+ tag.normalize("NFD").replace(/[\u0300-\u036f]/g, "") +'" target="_blank">'+ tag +'</a> ');
 	return tags;                
 }
 function getCategories(cats,catagada,rubricks) {  // extraction de chaque etiquettes  
-	catagada.forEach(cat => cats +='<a hre'+'f="http'+s+'://'+apiPluXmlSite+'/?categorie'+ cat+'/'+rubricks[cat].url+'" target="_blank">'+ rubricks[cat].name +'</a> ');
+	catagada.forEach(cat => cats +='<a hre'+'f="http'+s+'://'+apiPluXmlSite+'categorie'+ cat+'/'+rubricks[cat].url+'" target="_blank">'+ rubricks[cat].name +'</a> ');
 	return cats;                
 }
 function getDate(artdate) {// deconstruction de la chaine en date lisible
@@ -144,8 +144,7 @@ async function getCatNames(rubricks) {
 			
 			} catch (err) {
 			console.log("rub error");
-		}
-		
+		}		
 		return rubricks;
 	});
 	
@@ -161,21 +160,16 @@ async function getAuthors(authors) {
 	.then((json) => {
 
 		try {
-
 			//console.log(json['001'].name );
 			 Object.entries(json).forEach((entry) => {
              const [key, value] = entry;
              authors[key]={}
              authors[key].name= value.name;
              authors[key].infos = value.infos;
-             });
-
-			
+             });			
 			} catch (err) {
 			console.log("fetch author error");
 		}
 		return authors;
-
-
 	});	
 }
