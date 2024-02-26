@@ -66,25 +66,25 @@ function show(datas,type,q, rubricks='', authors='') {
 		
 		if(q =='article') { 
 			let page_number = '1';
-			if(apibypage != Number(apibypage) || apibypage <1 ) bypage = datas.bypage; else bypage = apibypage;
-			if(datas.page_number != undefined) page_number = datas.page_number
-			let pages = Math.ceil(datas.result.length / bypage);
+			if(apibypage != Number(apibypage) || apibypage <1 ) bypage = datas.i[0]['bypage']; else bypage = apibypage;
+			if(datas.i[0]['page_number'] != undefined) page_number = datas.i[0]['page_number']
+			let pages = Math.ceil(datas.size / bypage);
 			let next='';
 			let previous ='';
 			let first = (Number(page_number) * Number(bypage)) - Number(bypage) + 1;
 			let last = Number(bypage) * Number(page_number) + Number(bypage)  - Number(bypage) + 1;
-            let nextPage= ++datas.page_number;
-            let nextlast = last + Number(bypage);
-            let whereAt='';
-            let datart = Object.entries(datas.result)
-            if(pages>1) whereAt =' <span class="apiPageAt">Page <b>'+page_number +'</b> / '+pages+' </span>&nbsp;';
-            if(page_number > 1) previous='<button onclick="getPlxApiResult(\''+apiPluXmlSite+'apiPluxml&article&bypage='+bypage+'&page_number='+ --page_number + '\',\'article\');return false;">previous</button>';
-            if(last  <= datart.length) next = '<button onclick="getPlxApiResult(\''+apiPluXmlSite+'apiPluxml&article&bypage='+bypage+'&page_number='+ nextPage + '\',\'article\');return false;">next</button>';
-            datart =  datart.slice(--first,--last);
-            datart.reverse()
+            		let nextPage= ++datas.i[0]['page_number'];
+           		let nextlast = last + Number(bypage);
+            		let whereAt='';
+			let datart = Object.entries(datas.result)
+           		if(pages>1) whereAt =' <span class="apiPageAt">Page <b>'+page_number +'</b> / '+pages+' </span>&nbsp;';
+           		if(page_number > 1) previous='<button onclick="getPlxApiResult(\''+apiPluXmlSite+'apiPluxml&article&bypage='+bypage+'&page_number='+ --page_number + '\',\'article\');return false;">previous</button>';
+           		if(last  <= datart.length) next = '<button onclick="getPlxApiResult(\''+apiPluXmlSite+'apiPluxml&article&bypage='+bypage+'&page_number='+ nextPage + '\',\'article\');return false;">next</button>';
+            		datart =  datart.slice(--first,--last);
+            		datart.reverse()
 			let articles ='';
-            res.innerHTML='';
-            res.insertAdjacentHTML( 'beforeend', '<nav class="apiNav">'+previous+' '+whereAt+' '+ next +'</nav>');
+            		res.innerHTML='';
+            		res.insertAdjacentHTML( 'beforeend', '<nav class="apiNav">'+previous+' '+whereAt+' '+ next +'</nav>');
 			datart.forEach(function(art,articles){res.insertAdjacentHTML( 'afterbegin',getArticles(articles,art['1'],rubricks,authors))})
 		}
 	}
