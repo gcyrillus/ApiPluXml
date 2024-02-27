@@ -5,6 +5,7 @@
 const apiKey = 'apiPluXml';
 
 // protocol HTTP du site (preference https (connexion sécurisé)| http non garantie )
+// connexion https => https : OK | connexion http => http OK | connexions https => http ou http => https BLOCKED ! 
 const ProtocolHTTP = 'https';/* anything or http */
 
 // nom du domaine de l'API suivit d'un / et d'un ? si l'url rewriting n'est pas activé sur le site OluXml distant.
@@ -21,7 +22,7 @@ let artcontent= false ; /* pour voir tout l'article : mettre a  true */
 let scpt = document.createElement('script');
 scpt.setAttribute('id','apiCall');
 scpt.setAttribute('async','');
-scpt.setAttribute('src', '//'+apiPluXmlSite.replace(/\?$/, '')+'plugins/ApiPluXml/js/apiCalling.js');
+scpt.setAttribute('src', ProtocolHTTP+'://'+apiPluXmlSite.replace(/\?$/, '')+'plugins/ApiPluXml/js/apiCalling.js');
 document.querySelector('#results').appendChild(scpt);
 
   var script = document.querySelector('#apiCall');
