@@ -7,66 +7,47 @@ Extraction de données depuis PluXml renvoyées au format json
 <p><b>Affiche une liste de lien des pages statiques d'un site PluXml distant.</b></p>
 <h3>Code à inserer dans le corps HTML de votre page</h3>
 <pre><code>
-    <script>
-    /*/Config/*/
-    const apiKey = 'apiPluXml';
-    const ProtocolHTTP = 'https';/* anything or http */
-    const apiPluXmlSite = 'pluxopolis.net/crashnewstest';/* pluxml site domain name  where to fetch datas example: [pluxopolis.net/crashnewstest] (without brackets)   */
-    /*/End Config/*/
+    &lt;div id="results"><!-- La liste s'affiche ici -->&lt;/div>
+<script>
+/*/Config/*/
+// Votre clé
+const apiKey = 'apiPluXml';
 
-    let s = ''; 
-    if(ProtocolHTTP != 'http') s='s';
-    function getPlxApiResult(u,q) {
-        fetch('//'+u,{
-            method: 'GET',
-            headers:{'apiKey': apiKey
-            }
-        })
-        .then(response => response.text()) // Parse the response as text
-        .then(text => {
-            try {
-                const data = JSON.parse(text); // Try to parse the response as JSON
-                console.log(data);
-                show(data,'json',q);
-                } catch(err) {
-                console.log(text);
-                show(text,'html',q);
-            }
-        });  
-    }
-    
-    function show(datas,type,q) {
-        const res =	document.querySelector("#results");
-        
-        if(type=='html') {
-            res.insertAdjacentHTML( 'afterend',datas);
-        }
-        if (type=='json'){
-        
-         
-          if(q =='static') {
-            let static=new Array();
-            let tpl='<ul>';
-            Object.entries(datas).forEach((entry) => {
-                const [key, value] = entry;
-                let num= entry[0].replace(/^0+/, '');
-                tpl +='<li><a hre'+'f="http'+s+'://'+apiPluXmlSite+'/?static'+ num +'/'+ datas[`${key}`]['url']+'">'+ datas[`${key}`]['name']+'</a></li>';
-                console.log(datas[`${key}`]['name'])
-            });
-            tpl +='</ul>';
-            res.insertAdjacentHTML( 'afterbegin', tpl);
-          }
-        }
-        
-    }
-     
-    //getPlxApiResult(apiPluXmlSite+'/?apiPluxml') ; // aide descriptif
-    getPlxApiResult(apiPluXmlSite+'/?apiPluxml&static','static') ;
-    //getPlxApiResult(apiPluXmlSite+'/?apiPluxml&article','article') ;
-    //getPlxApiResult(apiPluXmlSite+'/?apiPluxml&categorie','categorie') ;
-    //getPlxApiResult(apiPluXmlSite+'/?apiPluxml&commentaires',commentaires') ;
-    //getPlxApiResult(apiPluXmlSite+'/?apiPluxml&etiquette','etiquette') ;
+// protocol HTTP du site (preference https (connexion sécurisé)| http non garantie )
+// connexion https => https : OK | connexion http => http OK | connexions https => http  BLOCKED ! |  http => https OK
+const ProtocolHTTP = 'https';/* or http */
 
-    </script>
-    <div id="results"><!-- La liste s'affiche ici --></div>
+// nom du domaine de l'API suivit d'un / et d'un ? si l'url rewriting n'est pas activé sur le site OluXml distant.
+const apiPluXmlSite = 'pluxthemes.com/';/*  exemple: 'pluxopolis.net/crashnewstest/' ou 'pluxthemes.com/?'   */
+
+// nombre d'article par page
+const apibypage=''; /* rien = la config du site distant */  
+
+// afficher l'article en entier ?
+let artcontent= false ; /* pour voir tout l'article : mettre a  true */
+/*/End Config/*/
+
+// Création et appel du fichier javascript distant.
+let scpt = document.createElement('script');
+scpt.setAttribute('id','apiCall');
+scpt.setAttribute('async','');
+scpt.setAttribute('src', ProtocolHTTP+'://'+apiPluXmlSite.replace(/\?$/, '')+'plugins/ApiPluXml/js/apiCalling.js');
+document.querySelector('#results').appendChild(scpt);
+
+  var script = document.querySelector('#apiCall');
+  script.addEventListener('load', function() {
+	////fonctions d'appels et d'affichage html
+	//========================================
+	//	getPlxApiResult(apiPluXmlSite+'apiPluxml') ; // aide descriptif
+	//	getPlxApiResult(apiPluXmlSite+'apiPluxml&static','static') ;
+		getPlxApiResult(apiPluXmlSite+'apiPluxml&article&page_number=1&bypage=5','article') ;
+	//	getPlxApiResult(apiPluXmlSite+'apiPluxml&categorie','categorie') ;
+	//	getPlxApiResult(apiPluXmlSite+'apiPluxml&etiquette','etiquette') ;
+
+	////fonction d'appels , retourne un objet json
+	//============================================
+	//	getPlxApiResult(apiPluXmlSite+apiPluxml&commentaires','commentaires') 
+	//	getPlxApiResult(apiPluXmlSite+apiPluxml&authors','authors')  
+  });					
+</script>
 </code></pre>
