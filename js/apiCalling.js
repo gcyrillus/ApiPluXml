@@ -2,7 +2,7 @@
 let s = ''; 
 if(ProtocolHTTP != 'http') s='s';
 function getPlxApiResult(u,q) {
-	fetch('//'+u,{
+	fetch('http'+s+'://'+u,{
 		method: 'GET',
 		headers:{'apiKey': apiKey
 		}
@@ -134,7 +134,7 @@ function getDate(artdate) {// deconstruction de la chaine en date lisible
 
 async function getCatNames(rubricks) {
     // faut retrouver la correspondance du numéro donc second request et on attend
-	rubricks = await fetch("//" + apiPluXmlSite + "apiPluxml&categorie", {
+	rubricks = await fetch("http"+s+"://" + apiPluXmlSite + "apiPluxml&categorie", {
 		method: "GET",
 		headers: { apiKey: apiKey }
 	})
@@ -159,7 +159,7 @@ async function getCatNames(rubricks) {
 
 async function getAuthors(authors) {
     // faut retrouver la correspondance du numéro donc second request et on attend
-	authors = await fetch("//" + apiPluXmlSite + "apiPluxml&authors", {
+	authors = await fetch("http"+s+"://" + apiPluXmlSite + "apiPluxml&authors", {
 		method: "GET",
 		headers: { apiKey: apiKey }
 	})
