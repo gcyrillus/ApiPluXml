@@ -52,6 +52,7 @@ document.querySelector('#results').appendChild(scpt);
 	//============================================
 	//	getPlxApiResult(apiPluXmlSite+apiPluxml&commentaires','commentaires') 
 	//	getPlxApiResult(apiPluXmlSite+apiPluxml&authors','authors')  
-  });					
+	//// (dé)commenter les lignes necessaires
+  });	
 </script>
 </code></pre>
