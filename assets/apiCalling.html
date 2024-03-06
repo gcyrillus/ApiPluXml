@@ -5,8 +5,8 @@
 const apiKey = 'apiPluXml';
 
 // protocol HTTP du site (preference https (connexion sécurisé)| http non garantie )
-// connexion https => https : OK | connexion http => http OK | connexions https => http ou http => https BLOCKED ! 
-const ProtocolHTTP = 'https';/* anything or http */
+// connexion https => https : OK | connexion http => http OK | connexions https => http  BLOCKED ! |  http => https OK
+const ProtocolHTTP = 'https';/* or http */
 
 // nom du domaine de l'API suivit d'un / et d'un ? si l'url rewriting n'est pas activé sur le site OluXml distant.
 const apiPluXmlSite = 'pluxthemes.com/';/*  exemple: 'pluxopolis.net/crashnewstest/' ou 'pluxthemes.com/?'   */
@@ -37,7 +37,7 @@ document.querySelector('#results').appendChild(scpt);
 
 	////fonction d'appels , retourne un objet json
 	//============================================
-	//	getPlxApiResult(apiPluXmlSite+'/?apiPluxml&commentaires','commentaires') 
-	//	getPlxApiResult(apiPluXmlSite+'/?apiPluxml&authors','authors')  
+	//	getPlxApiResult(apiPluXmlSite+apiPluxml&commentaires','commentaires') 
+	//	getPlxApiResult(apiPluXmlSite+apiPluxml&authors','authors')  
   });					
 </script>
