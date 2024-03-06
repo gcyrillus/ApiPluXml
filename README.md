@@ -5,6 +5,11 @@ Extraction de données depuis PluXml renvoyées au format json
 
 <h2>Exemple</h2>
 <p><b>Affiche une liste de lien des pages statiques d'un site PluXml distant.</b></p>
+<p>Depuis un site en http interrogeant un site en https : <a href="http://gcyrillus.free.fr/589/index.php?static5/test-free-to-https" target="_blank"> http => https</a></p>
+<p>Depuis un site en http interrogeant un site en http : <a href="http://gcyrillus.free.fr/589/index.php?static5/test-free-to-http" target="_blank"> http => http</a></p>
+<p>Depuis un site en https interrogeant un site en https : <a href="https://pluxopolis.net/crashnewstest/static5/sub2" target="_blank"> https => https</a></p>
+<p>Depuis un site en https interrogeant un site en http : <b style="color:red;">ce cas de figure ne fonctionne pas pour des raisons de sécurité . http ne renvoit pas de réponse cryptées.</b></p>
+<p></p>
 <h3>Code à inserer dans le corps HTML de votre page</h3>
 <pre><code>&lt;div id="results"><!-- La liste s'affiche ici -->&lt;/div>
 <script>
