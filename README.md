@@ -6,8 +6,7 @@ Extraction de données depuis PluXml renvoyées au format json
 <h2>Exemple</h2>
 <p><b>Affiche une liste de lien des pages statiques d'un site PluXml distant.</b></p>
 <h3>Code à inserer dans le corps HTML de votre page</h3>
-<pre><code>
-    &lt;div id="results"><!-- La liste s'affiche ici -->&lt;/div>
+<pre><code>&lt;div id="results"><!-- La liste s'affiche ici -->&lt;/div>
 <script>
 /*/Config/*/
 // Votre clé
