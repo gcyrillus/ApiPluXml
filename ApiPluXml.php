@@ -266,9 +266,6 @@
 		* 
 		**/
 		public function IndexBegin() {
-
-				 ini_set('display_errors', 'Off');
-
 		// Contenus article: comme ces infos ne semblent disponibles qu'à partir d'ici ...
 			if(isset($_GET['apiPluxml'])) {
 				# code à executer
@@ -296,10 +293,7 @@
 				#apiPluxml s'arrete là! C'est une API END !
 				exit;
 				<?php
-				echo self::END_CODE;		
-				
+				echo self::END_CODE;					
 			}
-		}
-		
-		
-	}				
+		}	
+	}
