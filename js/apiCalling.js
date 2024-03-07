@@ -159,12 +159,12 @@ async function getAuthors(authors) {
 	.then((json) => {
 
 		try {
-			 Object.entries(json).forEach((entry) => {
-             		const [key, value] = entry;
-             		authors[key]={}
-             		authors[key].name= value.name;
-             		authors[key].infos = value.infos;
-             });			
+			Object.entries(json).forEach((entry) => {
+             			const [key, value] = entry;
+             			authors[key]={}
+             			authors[key].name= value.name;
+             			authors[key].infos = value.infos;
+             		});			
 		} catch (err) {
 			console.log("fetch author error");
 		}
